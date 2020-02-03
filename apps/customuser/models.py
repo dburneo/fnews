@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin # AbstractUser
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.utils import timezone   # Probar a ver si funciona sin esta línea
 from django.utils.translation import gettext_lazy as _  # Probar a ver si funciona sin esta línea
 
@@ -51,8 +51,6 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     email = models.EmailField('email address', unique=True)
-    # password field supplied by AbstractBaseUser
-    # last_login field supplied by AbstractBaseUser
     first_name = models.CharField(_('first name'), max_length=30, blank=True)
     last_name = models.CharField(_('last name'), max_length=150, blank=True)
 
@@ -71,9 +69,6 @@ class User(AbstractBaseUser, PermissionsMixin):
             'Designates whether the user can log into this admin site.'
         ),
     )
-    # is_superuser field provided by PermissionsMixin
-    # groups field provided by PermissionsMixin
-    # user_permissions field provided by PermissionsMixin
 
     date_joined = models.DateTimeField(
         _('date joined'), default=timezone.now
@@ -96,10 +91,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def has_perm(self, perm, obj=None):
         "Does the user have a specific permission?"
-        # Simplest possible answer: Yes, always
         return True
 
     def has_module_perms(self, app_label):
         "Does the user have permissions to view the app `app_label`?"
-        # Simplest possible answer: Yes, always
         return True

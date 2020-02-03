@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.encoding import smart_str
 from django.conf import settings
-from  django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import get_user_model
 
 from . import managers
@@ -20,14 +20,14 @@ class News(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     link = models.URLField()
     title = models.TextField()
-    short_desc = models.TextField(null=True, blank=True)
+    short_desc = models.TextField(null=True)
     # tags = models.ManyToManyField("Tag", blank=True)
     media = models.ForeignKey("media.Media", on_delete=models.CASCADE)
     language = models.ForeignKey("country.Language", null=True, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
-    photo = models.URLField(null=True, blank=True, max_length=380)
+    photo = models.URLField(null=True, max_length=380)
     order = models.IntegerField(default=order_random)
-    long_desc = models.TextField(null=True, blank=True)
+    long_desc = models.TextField(null=True)
 
     def get_next(self):
         next = News.objects.filter(id__gt=self.id)
@@ -77,12 +77,12 @@ class NewsWithRead(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     link = models.URLField()
     title = models.TextField()
-    short_desc = models.TextField(null=True, blank=True)
+    short_desc = models.TextField(null=True)
     # tags = models.ManyToManyField("Tag", blank=True)
     media = models.ForeignKey("media.Media", on_delete=models.CASCADE)
     language = models.ForeignKey("country.Language", null=True, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
-    photo = models.URLField(null=True, blank=True)
+    photo = models.URLField(null=True)
     order = models.IntegerField(default=order_random)
     readlater = models.BooleanField(default=False)
 
@@ -101,7 +101,7 @@ class FollowNew(models.Model):
     marked = models.BooleanField(default=False)
     content = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
-    until = models.DateTimeField(null=True, blank=True)
+    until = models.DateTimeField(null=True)
 
 
     def save(self, *args, **kwargs):

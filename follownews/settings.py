@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'social_django',
     'apps.customuser',
     'apps.country',
     'apps.media',
@@ -53,6 +54,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'follownews.urls'
@@ -61,6 +64,10 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [],
+        # 'DIRS': [
+        #     PROJECT_DIR.child('templates'),
+        # ],
+        # 'DIRS': [os.path.join(BASE_DIR, 'mysite/templates')],     Esta línea es del tutorial
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -68,7 +75,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-            ],
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
+            ]
         },
     },
 ]
@@ -129,3 +138,27 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.twitter.TwitterOAuth',
+    'social_core.backends.facebook.FacebookOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+    # 'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+# LOGIN_REDIRECT_URL = 'http://ynews.co/'
+
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
+LOGIN_REDIRECT_URL = 'home'
+
+SOCIAL_AUTH_TWITTER_KEY = 'OngFoZzJF1sAtUEDmiBX0YtDi'
+SOCIAL_AUTH_TWITTER_SECRET = 'MrELm0HmvxArrRDyPnJGyTjmmaWSGtbD6RXZJ0MXYeGFpPWprX'
+
+SOCIAL_AUTH_FACEBOOK_KEY = '452230662326129'  # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = 'd01664baac0e94be7af43c267ccaa9a1'  # App Secret
+
+# Está en el tutorial
+# SOCIAL_AUTH_LOGIN_ERROR_URL = '/settings/'
+# SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/settings/'
+# SOCIAL_AUTH_RAISE_EXCEPTIONS = False
